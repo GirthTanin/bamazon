@@ -1,0 +1,26 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "A CLI named bamazon to demonstrate some working connections between JS and SQL files that can work to create a shopping experience",
+  "main": "customerBamazon.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node customerBamazon.js",
+    "watch": "nodema customerBamazon.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GirthTanin/bamazon.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GirthTanin/bamazon/issues"
+  },
+  "homepage": "https://github.com/GirthTanin/bamazon#readme",
+  "dependencies": {
+    "easy-table": "^1.1.1",
+    "inquirer": "^6.0.0",
+    "mysql": "^2.16.0"
+  }
+}

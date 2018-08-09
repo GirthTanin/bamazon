@@ -19,11 +19,12 @@ var inventoryID = [];
 var chosenDeal = -1;
 var newInventory = 0;
 
+
 function displayTable() {
     // console.log ("displayTable");
     connection.query("SELECT * FROM products", function (error, results) {
         if (error) throw error;
-        console.log("Our deals of the day are: ")
+        console.log("Our deals of the day are: ");
         // console.log(results);
 
         // Here I tried to get ES6 to work, but never could get the syntax correct...
@@ -40,12 +41,55 @@ function displayTable() {
             t.newRow();
         });
         console.log(t.toString());
+        console.log("Please choose a deal!", "\n", "Or press q to exit.");
+    sellStuff();
+    });
+}
 
-        // inquirer.prompt([{
-        //     type: "input"
-        //     name: "item_id"
-        // }])
-
+function sellStuff() {
+    inquirer.prompt([{
+        type: "input",
+        name: "item_id",
+        message: "What deal would you enjoy? Please enter it's corresponding number."
+    }]).then(function(answer) {
+        itemId = answer.item_id;
+        quantityQuery(itemID, howMany);
         });
-        // console.log("");
+    }
+
+    function howMany() {
+    inquirer.prompt([{
+        type: "input",
+        name: "quantity",
+        message: "How many units of this deal would you like?"
+    }
+    ]).then(function(response){
+    orderGood(answer, response);
+    });
+}
+
+
+function orderGood(deal, quantity) {
+    var yellow = "SELECT * FROM products WHERE item_id=" + deal;
+    connection.query(yellow, function(error, response){
+        if (error) throw error;
+        var stock = parseInt(response[0].stock_quantity);
+        var price = parseInt(respnse[0].price);
+        if (stock <= quantity) {
+            console.log("We're sorry, we have less than you were hoping for!");
+            mainPitch();
+        } else {
+            buyStuff (deal, quantity, stock, price);
+        }
+    });
+}
+
+function buyStuff (deal, quantity, stock, price) {
+    var newStock = stock - quantity;
+    var yellow = "UPDATE products SET stock_quantity = " + newStock + " WHERE item_id = " + deal;
+    connection.query(yellow, function(error, response) {
+        if (error) throw error;
+        var total = quantity * price;
+        console.log("Your total amount to be paid is: " + total);
+        });
     }

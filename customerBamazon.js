@@ -41,7 +41,7 @@ function displayTable() {
             t.newRow();
         });
         console.log(t.toString());
-        console.log("Please choose a deal!", "\n", "Or press q to exit.");
+        console.log("Please choose a deal!");
     sellStuff();
     });
 }
@@ -52,19 +52,21 @@ function sellStuff() {
         name: "item_id",
         message: "What deal would you enjoy? Please enter it's corresponding number."
     }]).then(function(answer) {
-        itemId = answer.item_id;
-        quantityQuery(itemID, howMany);
+        var itemId = answer.item_id;
+        howMany(itemId);
         });
     }
 
-    function howMany() {
+    function howMany(itemId) {
     inquirer.prompt([{
         type: "input",
         name: "quantity",
         message: "How many units of this deal would you like?"
     }
     ]).then(function(response){
-    orderGood(answer, response);
+        // this next variable is response.quantity because I chose the name: quantity above in the inquirer prompt
+        var quantity = response.quantity;
+        orderGood(itemId, quantity);
     });
 }
 
@@ -74,10 +76,10 @@ function orderGood(deal, quantity) {
     connection.query(yellow, function(error, response){
         if (error) throw error;
         var stock = parseInt(response[0].stock_quantity);
-        var price = parseInt(respnse[0].price);
+        var price = parseInt(response[0].price);
         if (stock <= quantity) {
             console.log("We're sorry, we have less than you were hoping for!");
-            mainPitch();
+            displayTable();
         } else {
             buyStuff (deal, quantity, stock, price);
         }
@@ -91,5 +93,6 @@ function buyStuff (deal, quantity, stock, price) {
         if (error) throw error;
         var total = quantity * price;
         console.log("Your total amount to be paid is: " + total);
+        connection.end();
         });
     }

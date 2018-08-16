@@ -113,8 +113,10 @@ function mainPitch() {
         name: "again",
         message:"Is that all you can DEAL with today?    get it?!   ha!, \n, Would you like to shop some more?"
     }]).then(function(response) {
-        console.log(response);
-        if (response.restart === true) {
+        // console.log(response); 
+        var moreDeals = response.again;
+        // displayTable();
+        if (moreDeals === true) {
             displayTable();
         } else {exit();}
     });

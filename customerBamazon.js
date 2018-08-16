@@ -19,6 +19,9 @@ var inventoryID = [];
 var chosenDeal = -1;
 var newInventory = 0;
 
+function exit() {
+    connection.end();
+}
 
 function displayTable() {
     // console.log ("displayTable");
@@ -41,7 +44,8 @@ function displayTable() {
             t.newRow();
         });
         console.log(t.toString());
-        console.log("Please choose a deal!");
+        // I need to learn how to get the if statement to work or I need to delete the press q to quit.
+        console.log("Please choose a deal!", "\n", "Or press q to quit.");
     sellStuff();
     });
 }
@@ -53,7 +57,13 @@ function sellStuff() {
         message: "What deal would you enjoy? Please enter it's corresponding number."
     }]).then(function(answer) {
         var itemId = answer.item_id;
-        howMany(itemId);
+        // here I want an if statement to allow someone to exit if they want...
+        if (itemId === 'q') {
+            exit();
+        } else {
+            console.log(itemId + " is a great choice!");
+            howMany(itemId);
+            }
         });
     }
 
@@ -64,9 +74,9 @@ function sellStuff() {
         message: "How many units of this deal would you like?"
     }
     ]).then(function(response){
-        // this next variable is response.quantity because I chose the name: quantity above in the inquirer prompt
         var quantity = response.quantity;
-        orderGood(itemId, quantity);
+        console.log(quantity + " is the amount you desired.");
+    orderGood(itemId, quantity);
     });
 }
 
@@ -79,7 +89,7 @@ function orderGood(deal, quantity) {
         var price = parseInt(response[0].price);
         if (stock <= quantity) {
             console.log("We're sorry, we have less than you were hoping for!");
-            displayTable();
+            mainPitch();
         } else {
             buyStuff (deal, quantity, stock, price);
         }
@@ -93,6 +103,19 @@ function buyStuff (deal, quantity, stock, price) {
         if (error) throw error;
         var total = quantity * price;
         console.log("Your total amount to be paid is: " + total);
-        connection.end();
+        mainPitch();
         });
     }
+
+function mainPitch() {
+    inquirer.prompt([{
+        type: "confirm",
+        name: "again",
+        message:"Is that all you can DEAL with today?    get it?!   ha!, \n, Would you like to shop some more?"
+    }]).then(function(response) {
+        console.log(response);
+        if (response.restart === true) {
+            displayTable();
+        } else {exit();}
+    });
+}

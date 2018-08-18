@@ -7,8 +7,8 @@ In this activity, I created an Amazon-like storefront with the MySQL skills I le
 ## Instructions 
 When opening the file customerBamazon.js in the terminal type npm start.  This will start the whole shopping experience.
 
-![bamazon] (./assets/images/A-Opening.png)
+![bamazon](./assets/images/A-Opening.png)
 
-![bamazon] (./assets/images/B-Middle.png)
+![bamazon](./assets/images/B-Middle.png)
 
-![bamazon] (./assets/images/C-End.png)
+![bamazon](./assets/images/C-End.png)
